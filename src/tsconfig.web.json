@@ -1,0 +1,16 @@
+{
+	"extends": "@electron-toolkit/tsconfig/tsconfig.web.json",
+	"include": [
+		"src/web.ts",
+		"src/preload",
+		"src/renderer",
+	],
+	"compilerOptions": {
+		/* Bundler mode */
+		"moduleResolution": "bundler",
+
+		"composite": true,
+
+		"types": ["electron-vite/node"]
+	}
+}

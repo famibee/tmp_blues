@@ -1,0 +1,111 @@
+{
+	"name": "tmp_blues",
+	"version": "1.0.0",
+	"productName": "桜の樹の下には",
+	"description": "梶井基次郎「桜の樹の下には」をノベルゲーム化したものです。",
+	"main": "out/main/index.js",
+	"appId": "com.fc2.blog.famibee.skynovel.tmp_blues",
+	"appBundleId": "com.fc2.blog.famibee.skynovel.tmp_blues",
+	"appCopyright": "(c)ふぁみべぇ",
+	"author": "ふぁみべぇ",
+	"publisher": "電子演劇部",
+	"homepage": "https://famibee.blog.fc2.com/",
+	"license": "MIT",
+	"type": "module",
+	"dependencies": {
+		"@electron-toolkit/preload": "^3.0.2",
+		"@electron-toolkit/utils": "^4.0.0",
+		"@famibee/bluesnovel": "file:../bluesnovel",
+		"about-window": "^1.15.2",
+		"humane-js": "^3.2.2"
+	},
+	"devDependencies": {
+		"@electron-toolkit/eslint-config-prettier": "^3.0.0",
+		"@electron-toolkit/eslint-config-ts": "^3.1.0",
+		"@electron-toolkit/tsconfig": "^2.0.0",
+		"@types/humane-js": "^3.2.4",
+		"electron": "^39.2.7",
+		"electron-builder": "^26.4.0",
+		"electron-vite": "^5.0.0",
+		"rimraf": "^6.1.2",
+		"vite": "^7.3.0"
+	},
+	"scripts": {
+		"web": "vite --open",
+		"web_bp": "npm run web_bld && vite preview --open",
+		"web_bld": "vite build",
+		"app": "electron-vite dev",
+		"app_bld": "electron-vite build",
+		"pkg:win": "npm run app_bld && electron-builder --win",
+		"pkg:mac": "npm run app_bld && electron-builder --mac",
+		"pkg:linux": "npm run app_bld && electron-builder --linux",
+		"rebuild": "rimraf dist && rimraf out && npm run web_bld && npm run app_bld",
+		"slimdown_mod": "bun remove @ffmpeg-installer/ffmpeg fluent-ffmpeg fs-extra p-queue png2icons sharp",
+		"update": "bun update"
+	},
+	"build": {
+		"appId": "com.fc2.blog.famibee.skynovel.tmp_blues",
+		"productName": "桜の樹の下には",
+		"artifactName": "${name}-${version}-${arch}.${ext}",
+		"directories": {
+			"output": "build/package/"
+		},
+		"files": [
+			"build/icon/*",
+			"build/include/*",
+			"out/**/*"
+		],
+		"asar": true,
+		"mac": {
+			"icon": "build/icon/icon.icns",
+			"target": [
+				"dmg"
+			],
+			"category": "public.app-category.games"
+		},
+		"dmg": {
+			"contents": [
+				{
+					"x": 410,
+					"y": 220,
+					"type": "link",
+					"path": "/Applications"
+				},
+				{
+					"x": 130,
+					"y": 220,
+					"type": "file"
+				},
+				{
+					"x": 130,
+					"y": 100,
+					"type": "file",
+					"path": "build/include/readme.txt"
+				}
+			]
+		},
+		"win": {
+			"icon": "build/icon/icon.ico",
+			"target": "nsis",
+			"asarUnpack": [
+				"build/include/"
+			]
+		},
+		"linux": {
+			"icon": "build/icon/icon.icns",
+			"target": "AppImage",
+			"category": "Game"
+		}
+	},
+	"keywords": [
+		"sample",
+		"skynovel"
+	],
+	"repository": {
+		"type": "git",
+		"url": "git+ssh://git@github.com:famibee/tmp_blues.git"
+	},
+	"bugs": {
+		"email": "ugainovel@gmail.com"
+	}
+}
