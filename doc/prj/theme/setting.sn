@@ -1,8 +1,8 @@
-[add_lay layer=base class=grp]
+; [add_lay layer=base class=grp]	;//TODO: 一時コメントアウト
 [add_lay layer=0 class=grp]
 [add_lay layer=1 class=grp]
 [add_lay layer=2 class=grp]
-[add_lay layer=mes class=txt]
+; [add_lay layer=mes class=txt]		;//TODO: 一時コメントアウト
 	; レイヤを追加したい場合はここで追加しておく
 	; dsp_lays_grp にレイヤ名追記しないと、
 	; レイヤ状態がセーブ・ロードされないので注意
