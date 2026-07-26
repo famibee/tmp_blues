@@ -30,6 +30,9 @@
 		"rimraf": "^6.1.3",
 		"vite": "^8.1.5"
 	},
+	"trustedDependencies": [
+		"electron"
+	],
 	"scripts": {
 		"web": "vite --open",
 		"web_bp": "npm run web_bld && vite preview --open",
