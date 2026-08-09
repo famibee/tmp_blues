@@ -33,6 +33,11 @@ crashReporter.start({
 });
 if (! app.requestSingleInstanceLock()) app.quit();
 
+// パッケージ版はfile://になりfetch()がスキームを受け付けない（prj.json等が読めず起動できない）ため、
+//	httpと同じ扱いのカスタムスキームで開く。app のready前にしか登録できないのでトップレベルで呼ぶ
+import {appMain} from '@famibee/bluesnovel/appMain';
+appMain.registerScheme();
+
 let guiWin: BrowserWindow | null = null;
 app.on('second-instance', ()=> {
 	if (! guiWin) return;
@@ -49,7 +54,7 @@ app.whenReady().then(async ()=> {
 	// see https://github.com/alex8088/electron-toolkit/tree/master/packages/utils
 	app.on('browser-window-created', (_, win)=> optimizer.watchWindowShortcuts(win));
 
-	const {appMain} = await import('@famibee/bluesnovel/appMain');
+	appMain.handleScheme(resolve(__dirname, '../renderer'));
 	const w = guiWin = appMain.initRenderer(
 		resolve(__dirname, '../preload/preload.mjs'),
 		pkg.version,
@@ -60,7 +65,7 @@ app.whenReady().then(async ()=> {
 	// Load the remote URL for development or the local html file for production.
 	const urlEr = process.env['ELECTRON_RENDERER_URL'];
 	if (is.dev && urlEr) w.loadURL(urlEr);
-	else w.loadFile(resolve(__dirname, '../renderer/index.html'));
+	else w.loadURL('app://bundle/index.html');
 	// else w.loadFile('./index.html');		とかはダメ（2025/01/05）
 
 	const isMac = platform.isMacOS;
