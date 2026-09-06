@@ -43,11 +43,17 @@
 	%remember_key?='キー名|毎回確認する|指定すると「次からこの確認をしない」チェックを表示し、\nチェック時は答え（y/n）を sys:sn.dontAsk.キー名 へ記憶して次回以降スキップする。\n記憶の消去は設定画面の「確認ダイアログをリセット」（_config.sn *resetDontAsk）'
 ]
 	[let name=_ry_rk text=%remember_key|'']
-	; 「次から確認しない」で答えを記憶済みなら、ダイアログを出さず即座にその答えを返す
+	; 「次から確認しない」で答えを記憶済みなら、ダイアログを出さず即座にその答えを返す。
 	;	（dontAsk 未設定キーは undefined。text= には出さず cond= の比較でのみ触る）
-	[let name=_yesno text='y' cond="_ry_rk != '' && sys:sn.dontAsk[_ry_rk] == 'y'"]
-	[let name=_yesno text='n' cond="_ry_rk != '' && sys:sn.dontAsk[_ry_rk] == 'n'"]
-	[return cond="_ry_rk != '' && (sys:sn.dontAsk[_ry_rk] == 'y' || sys:sn.dontAsk[_ry_rk] == 'n')"]
+	;	抜ける前に通常フローの *exit と同じイベント再有効化を通す：呼び元
+	;	（_submenu.sn *title 等）は「ask_ync がイベントを有効化して返す」前提のため。
+	[let name=_ry_hit text="&_ry_rk != '' && (sys:sn.dontAsk[_ry_rk] == 'y' || sys:sn.dontAsk[_ry_rk] == 'n')"]
+	[let name=_yesno text='y' cond="_ry_hit && sys:sn.dontAsk[_ry_rk] == 'y'"]
+	[let name=_yesno text='n' cond="_ry_hit && sys:sn.dontAsk[_ry_rk] == 'n'"]
+	[enable_event enabled=true cond=_ry_hit]
+	[enable_event enabled=true layer=mes_sysmenu cond=_ry_hit]
+	[set_focus to=null cond=_ry_hit]
+	[return cond=_ry_hit]
 
 	&tmpGameState = isGameState
 
