@@ -40,16 +40,17 @@
 	detail='プレイヤーが押下した結果をtmp:_yesnoに「y」か「n」で返す'
 
 	%mes='String||プレイヤーに質問したい文言'
-	%remember_key?='キー名|毎回確認する|指定すると「次からこの確認をしない」チェックを表示し、\nチェック時は答え（y/n）を sys:sn.dontAsk.キー名 へ記憶して次回以降スキップする。\n記憶の消去は設定画面の「確認ダイアログをリセット」（_config.sn *resetDontAsk）'
+	%remember_key?='キー名|毎回確認する|指定すると「次からこの確認をしない」チェックを表示する。\nチェック＋了解 で sys:sn.dontAsk.キー名 に登録し、次回以降このダイアログを出さず「了解」を返す。\nキャンセル時は登録しない（否定を記憶するとその選択肢が無反応に見えるため）。\n登録の消去は設定画面の「確認ダイアログをリセット」（_config.sn *resetDontAsk）'
 ]
 	[let name=_ry_rk text=%remember_key|'']
-	; 「次から確認しない」で答えを記憶済みなら、ダイアログを出さず即座にその答えを返す。
+	; 「次から確認しない」でスキップ登録済み（＝肯定の答えを記憶）なら、ダイアログを
+	;	出さず即 'y' を返す。**否定は記憶しない**：記憶するとその選択肢が永久に無反応に
+	;	見えるため（_submenu.sn *title で jump *retry に落ちるだけになる）。
 	;	（dontAsk 未設定キーは undefined。text= には出さず cond= の比較でのみ触る）
 	;	抜ける前に通常フローの *exit と同じイベント再有効化を通す：呼び元
 	;	（_submenu.sn *title 等）は「ask_ync がイベントを有効化して返す」前提のため。
-	[let name=_ry_hit text="&_ry_rk != '' && (sys:sn.dontAsk[_ry_rk] == 'y' || sys:sn.dontAsk[_ry_rk] == 'n')"]
-	[let name=_yesno text='y' cond="_ry_hit && sys:sn.dontAsk[_ry_rk] == 'y'"]
-	[let name=_yesno text='n' cond="_ry_hit && sys:sn.dontAsk[_ry_rk] == 'n'"]
+	[let name=_ry_hit text="&_ry_rk != '' && sys:sn.dontAsk[_ry_rk] == 'y'"]
+	[let name=_yesno text='y' cond=_ry_hit]
 	[enable_event enabled=true cond=_ry_hit]
 	[enable_event enabled=true layer=mes_sysmenu cond=_ry_hit]
 	[set_focus to=null cond=_ry_hit]
@@ -104,9 +105,10 @@
 *cancel
 	[se fn=&sysse_cancel buf=SYS]
 *exit
-	; 「次からこの確認をしない」チェック時は、今の答え（y/n）を記憶する
+	; 「次からこの確認をしない」チェック＋了解 のときだけ、次回スキップを登録する。
+	;	キャンセル（_yesno=='n'）では記憶しない（否定を記憶するとボタンが死んで見えるため）
 	[let_frame id=yesno var_name=val_dontask]
-	[let name="&'sys:sn.dontAsk.'+ _ry_rk" text=&_yesno cond="_ry_rk != '' && const.sn.frm.yesno.val_dontask"]
+	[let name="&'sys:sn.dontAsk.'+ _ry_rk" text='y' cond="_ry_rk != '' && const.sn.frm.yesno.val_dontask && _yesno == 'y'"]
 
 	[frame id=yesno visible=false]
 
