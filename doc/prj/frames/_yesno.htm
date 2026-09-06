@@ -22,17 +22,24 @@
 			img.dataset.src = img.dataset.src.replace(/\.(jpe?g|png)$/, '.webp');	// 本番でsn_repRes()に渡してしまうので
 		}
 
+		document.getElementById('dontask').addEventListener('input', e=> {
+			val_dontask = e.target.checked;
+		});
+
 		if (isDev) val2ctrl();	// デザイン用
 	}, {once: true});
 
 	// SKYNovelから読み書きする変数なので、触らない。わざとvar
 	var val_dic = null;
+	var val_rk = '';		// [ask_ync remember_key=…] のキー。空なら「次から確認しない」を出さない
+	var val_dontask = false;	// 「次からこの確認をしない」チェック状態（SKYNovel が読む）
 
 	var val_ui_lang = 'ja';
 	var val_ui = {
 		"ja": {
 			"ok"	: "決定",
-			"cancel": "キャンセル"
+			"cancel": "キャンセル",
+			"dontask": "次からこの確認をしない"
 		}
 	};
 	function ui_redraw() {
@@ -40,6 +47,8 @@
 		ok.textContent = ok.title = ok.ariaLabel = val_ui[val_ui_lang]['ok'];
 		const close = document.getElementById('close');
 		close.textContent = close.title = close.ariaLabel = val_ui[val_ui_lang]['cancel'];
+		const da = val_ui[val_ui_lang]['dontask'];
+		if (da) document.getElementById('dontask_label').textContent = da;
 	}
 
 	function val2ctrl() {	// 変数→コンポーネント
@@ -53,6 +62,12 @@
 		const img = document.getElementById('img');
 		img.hidden = !o.pic;
 		if (! img.hidden) img.dataset.src = o.pic;
+
+		// 「次からこの確認をしない」：remember_key 指定時だけ表示。開くたび未チェックへ戻す
+		const rk = (typeof val_rk === 'string') ? val_rk : '';
+		document.getElementById('dontask_row').hidden = !rk;
+		val_dontask = false;
+		document.getElementById('dontask').checked = false;
 
 		Array.from(document.getElementsByTagName('img')).forEach(i=> setImg(i));
 	}
@@ -77,6 +92,12 @@
 			<div class="text-center">
 				<button id="ok" type="button" class="btn btn-dark btn-lg mx-2" aria-label="決定" data-bs-toggle="tooltip" title="決定">決定</button>
 				<button id="close" type="button" class="btn btn-outline-light btn-lg mx-2" aria-label="キャンセル" data-bs-toggle="tooltip" title="キャンセル">キャンセル</button>
+			</div>
+			<div id="dontask_row" class="text-center mt-3" hidden>
+				<div class="form-check d-inline-block">
+					<input class="form-check-input" type="checkbox" id="dontask"/>
+					<label class="form-check-label" for="dontask" id="dontask_label">次からこの確認をしない</label>
+				</div>
 			</div>
 		</div>
 	</div>

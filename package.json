@@ -15,20 +15,22 @@
 	"dependencies": {
 		"@electron-toolkit/preload": "^3.0.2",
 		"@electron-toolkit/utils": "^4.0.0",
-		"@famibee/bluesnovel": "file:../bluesnovel",
+		"@famibee/bluesnovel": "latest",
 		"about-window": "^1.15.2",
-		"humane-js": "^3.2.2"
+		"humane-js": "^3.2.2",
+		"js-yaml": "^5.4.1",
+		"node-abi": "^4.35.0"
 	},
 	"devDependencies": {
 		"@electron-toolkit/eslint-config-prettier": "^3.0.0",
 		"@electron-toolkit/eslint-config-ts": "^3.1.0",
 		"@electron-toolkit/tsconfig": "^2.0.0",
 		"@types/humane-js": "^3.2.4",
-		"electron": "^43.3.0",
-		"electron-builder": "^26.15.3",
+		"electron": "^44.2.0",
+		"electron-builder": "26.0.15",
 		"electron-vite": "^5.0.0",
 		"rimraf": "^6.1.3",
-		"vite": "^8.2.1"
+		"vite": "^8.2.2"
 	},
 	"trustedDependencies": [
 		"electron"

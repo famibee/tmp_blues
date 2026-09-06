@@ -196,7 +196,7 @@
 
 ;*********************************************************
 *title
-	[ask_ync mes=&mes.タイトルに戻りますか？]
+	[ask_ync mes=&mes.タイトルに戻りますか？ remember_key=title]
 	[jump label=*retry cond="_yesno=='n'"]
 
 	[call label=*exit]

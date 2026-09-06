@@ -8,23 +8,28 @@
 	{
 		"ja": {
 			"ok"	: "了解",
-			"cancel": "キャンセル"
+			"cancel": "キャンセル",
+			"dontask": "次からこの確認をしない"
 		},
 		"es": {
 			"ok"	: "entendido",
-			"cancel": "Cancelar"
+			"cancel": "Cancelar",
+			"dontask": "No volver a preguntar"
 		},
 		"en": {
 			"ok"	: "ok",
-			"cancel": "cancel"
+			"cancel": "cancel",
+			"dontask": "Don't ask again"
 		},
 		"cn": {
 			"ok"	: "收到",
-			"cancel": "取消"
+			"cancel": "取消",
+			"dontask": "不再询问"
 		},
 		"ct": {
 			"ok"	: "收到",
-			"cancel": "取消"
+			"cancel": "取消",
+			"dontask": "不再詢問"
 		}
 	}
 [endlet_ml]
@@ -35,7 +40,15 @@
 	detail='プレイヤーが押下した結果をtmp:_yesnoに「y」か「n」で返す'
 
 	%mes='String||プレイヤーに質問したい文言'
+	%remember_key?='キー名|毎回確認する|指定すると「次からこの確認をしない」チェックを表示し、\nチェック時は答え（y/n）を sys:sn.dontAsk.キー名 へ記憶して次回以降スキップする。\n記憶の消去は設定画面の「確認ダイアログをリセット」（_config.sn *resetDontAsk）'
 ]
+	[let name=_ry_rk text=%remember_key|'']
+	; 「次から確認しない」で答えを記憶済みなら、ダイアログを出さず即座にその答えを返す
+	;	（dontAsk 未設定キーは undefined。text= には出さず cond= の比較でのみ触る）
+	[let name=_yesno text='y' cond="_ry_rk != '' && sys:sn.dontAsk[_ry_rk] == 'y'"]
+	[let name=_yesno text='n' cond="_ry_rk != '' && sys:sn.dontAsk[_ry_rk] == 'n'"]
+	[return cond="_ry_rk != '' && (sys:sn.dontAsk[_ry_rk] == 'y' || sys:sn.dontAsk[_ry_rk] == 'n')"]
+
 	&tmpGameState = isGameState
 
 	[enable_event enabled=false]
@@ -49,6 +62,7 @@
 	[let name=pic text=%pic|'']
 	[set_frame id=yesno var_name=val_dic text=#&'{"mes":"$mp:mes","pic":"$pic"}'#]
 	[set_frame id=yesno var_name=val_ui_lang text=&lang]
+	[set_frame id=yesno var_name=val_rk text=&_ry_rk]
 	[let_frame id=yesno var_name=val2ctrl function=true]
 
 	[frame id=yesno visible=true float=true]
@@ -84,6 +98,10 @@
 *cancel
 	[se fn=&sysse_cancel buf=SYS]
 *exit
+	; 「次からこの確認をしない」チェック時は、今の答え（y/n）を記憶する
+	[let_frame id=yesno var_name=val_dontask]
+	[let name="&'sys:sn.dontAsk.'+ _ry_rk" text=&_yesno cond="_ry_rk != '' && const.sn.frm.yesno.val_dontask"]
+
 	[frame id=yesno visible=false]
 
 	[enable_event enabled=true]

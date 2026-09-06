@@ -34,6 +34,12 @@
 	; 画面モード
 	[event key='dom=config:#chkScrMode' label=*chkScrMode global=true call=true]
 
+	; ボイスカット
+	[event key='dom=config:#chkVoiceCut' label=*chkVoiceCut global=true call=true]
+
+	; 確認ダイアログのリセット（[ask_ync] の「次から確認しない」を解除）
+	[event key='dom=config:#resetDontAsk' label=*resetDontAsk global=true call=true]
+
 	; エクスポート・インポート
 	[event key='dom=config:#export' label=*export global=true call=true]
 	[event key='dom=config:#import' label=*import global=true call=true]
@@ -77,6 +83,11 @@
 				"system-SubTitle": "システム",
 				"screen mode": "画面モード",
 				"screen mode-Sub": "全画面か",
+				"ボイスカット": "ボイスカット",
+				"ボイスカット-Sub": "クリックで直前のボイスを止める",
+				"確認ダイアログをリセット": "確認ダイアログ",
+				"確認ダイアログをリセット-Sub": "「次から確認しない」を解除",
+				"resetDontAsk": "リセット",
 				"export-Sub": "プレイデータのバックアップ",
 				"import-Sub": "プレイデータのリストア",
 				"export": "エクスポート",
@@ -116,6 +127,11 @@
 				"system-SubTitle": "sistema",
 				"screen mode": "Modo de pantalla",
 				"screen mode-Sub": "pantalla completa",
+				"ボイスカット": "Cortar voz",
+				"ボイスカット-Sub": "Detener la voz al hacer clic",
+				"確認ダイアログをリセット": "Diálogos de confirmación",
+				"確認ダイアログをリセット-Sub": "Deshacer «no preguntar de nuevo»",
+				"resetDontAsk": "Restablecer",
 				"export-Sub": "Copia de seguridad de datos de reproducción",
 				"import-Sub": "Restauración de datos de reproducción",
 				"export": "exportar",
@@ -155,6 +171,11 @@
 				"system-SubTitle": "System",
 				"screen mode": "Screen mode",
 				"screen mode-Sub": "full screen",
+				"ボイスカット": "Voice cut",
+				"ボイスカット-Sub": "Stop the voice on click",
+				"確認ダイアログをリセット": "Confirm dialogs",
+				"確認ダイアログをリセット-Sub": "Re-enable skipped confirmations",
+				"resetDontAsk": "Reset",
 				"export-Sub": "Play data backup",
 				"import-Sub": "Restoring play data",
 				"export": "export",
@@ -194,6 +215,11 @@
 				"system-SubTitle": "系统",
 				"screen mode": "全屏・视窗模式",
 				"screen mode-Sub": "全屏",
+				"ボイスカット": "语音切断",
+				"ボイスカット-Sub": "点击时停止当前语音",
+				"確認ダイアログをリセット": "确认对话框",
+				"確認ダイアログをリセット-Sub": "解除“不再询问”",
+				"resetDontAsk": "重置",
 				"export-Sub": "播放数据备份",
 				"import-Sub": "恢复播放数据",
 				"export": "出口",
@@ -233,6 +259,11 @@
 				"system-SubTitle": "系統",
 				"screen mode": "全螢幕模式",
 				"screen mode-Sub": "全屏",
+				"ボイスカット": "語音切斷",
+				"ボイスカット-Sub": "點擊時停止當前語音",
+				"確認ダイアログをリセット": "確認對話框",
+				"確認ダイアログをリセット-Sub": "解除「不再詢問」",
+				"resetDontAsk": "重設",
 				"export-Sub": "播放數據備份",
 				"import-Sub": "恢復播放數據",
 				"export": "出口",
@@ -321,6 +352,23 @@
 *chkScrMode
 	[let_frame id=config var_name=val_chkScrMode]
 	[call fn=main label=*toggle_full_screen cond=const.sn.frm.config.val_chkScrMode!=const.sn.displayState]
+[return]
+
+; ボイスカット
+*chkVoiceCut
+	[let_frame id=config var_name=val_chkVoiceCut]
+	&vc = 'continue'
+	[let name=vc text='cut' cond=const.sn.frm.config.val_chkVoiceCut]
+	&sys:sn.sound.voice_cut = vc
+[return]
+
+; 確認ダイアログのリセット（[ask_ync remember_key=…] の記憶を消す）
+;	remember_key を新設したらここに1行ずつ足す
+*resetDontAsk
+	[se fn=&sysse_ok1 buf=SYS]
+	&sys:sn.dontAsk.resume = null
+	&sys:sn.dontAsk.title = null
+	[notice text=&mes.確認ダイアログをリセットしました]
 [return]
 
 
@@ -437,6 +485,7 @@
 	[set_frame id=config var_name=val_sldVolMulTalking text=&sys:sn.sound.BGM.vol_mul_talking|1]
 
 	[set_frame id=config var_name=val_chkScrMode text=&const.sn.displayState]
+	[set_frame id=config var_name=val_chkVoiceCut text="&sys:sn.sound.voice_cut == 'cut'"]
 
 	[set_frame id=config var_name=val_ui_lang text=&lang]
 	[let_frame id=config var_name=val2ctrl function=true]

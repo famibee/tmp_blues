@@ -93,7 +93,7 @@
 [macro name=sys_resume_load detail='レジューム処理']
 	[return cond=!sys:doResume]
 
-	[ask_ync mes=&mes.前回終了ポイントから再開しますか？ cond=!autoResume]
+	[ask_ync mes=&mes.前回終了ポイントから再開しますか？ remember_key=resume cond=!autoResume]
 	[return cond="! autoResume && _yesno=='n'"]
 
 	[jump fn=_archive label=*do_load_resume]
@@ -676,7 +676,7 @@
 *title_sys
 	[enable_event enabled=false]
 	[enable_event layer=mes_sysmenu enabled=false]
-	[ask_ync mes=&mes.タイトルに戻りますか？]
+	[ask_ync mes=&mes.タイトルに戻りますか？ remember_key=title]
 	[enable_event enabled=true]
 	[enable_event layer=mes_sysmenu enabled=true]
 	[return cond="_yesno=='n'"]

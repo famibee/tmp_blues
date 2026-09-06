@@ -25,6 +25,10 @@
 
 	&vm_talking = 0.3	; {"lbl":"音声再生中のBGM乗数","type":"rng","max":1,"min":0,"step":0.1}
 	&sys:sn.sound.BGM.vol_mul_talking = v_voice
+
+	; ボイスカット：クリックで文章を進めたとき直前のボイスをどうするか
+	;	'continue'＝継続（次行が有声なら自然に置換）　'cut'＝クリック時点で停止
+	&sys:sn.sound.voice_cut = 'continue'
 [endif]
 
 ; 各種効果音

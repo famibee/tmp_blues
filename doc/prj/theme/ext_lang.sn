@@ -72,6 +72,7 @@
 	&mes.ゲームを再起動する必要・終了しますか？ = 'There is a need to re-start the game. Is it good? (Start-up in the manual)'
 	&mes.ゲームを再起動する必要・ブラウザリロード = 'You have to restart the game. Please reload your browser'
 	&mes.プレイデータをエクスポートしました = 'Exported play data'
+	&mes.確認ダイアログをリセットしました = 'Confirmation dialogs reset'
 
 	; _saveload.sn
 	&mes.しおりを上書き保存しますか？ = 'overwrite save a bookmark?'
@@ -151,6 +152,7 @@
 	&mes.ゲームを再起動する必要・終了しますか？ = '有必要重新啟動遊戲。 你確定你要退出嗎？ （手動啟動）'
 	&mes.ゲームを再起動する必要・ブラウザリロード = '你必須重新開始遊戲。 請重新加載您的瀏覽器'
 	&mes.プレイデータをエクスポートしました = '導出播放數據'
+	&mes.確認ダイアログをリセットしました = '已重設確認對話框'
 
 	; _saveload.sn
 	&mes.しおりを上書き保存しますか？= '是否覆蓋書籤？'
@@ -231,6 +233,7 @@
 	&mes.ゲームを再起動する必要・終了しますか？ = '有必要重新啟動遊戲。 你确定你要退出吗？ （手动启动）'
 	&mes.ゲームを再起動する必要・ブラウザリロード = '你必须重新开始游戏。 请重新加载您的浏览器'
 	&mes.プレイデータをエクスポートしました = '导出播放数据'
+	&mes.確認ダイアログをリセットしました = '已重置确认对话框'
 
 	; _saveload.sn
 	&mes.しおりを上書き保存しますか？= '是否覆蓋書籤？'
@@ -309,6 +312,7 @@
 	&mes.ゲームを再起動する必要・終了しますか？ = 'Se necesita reiniciar el juego. ¿Te parece bien hacerlo ahora?'
 	&mes.ゲームを再起動する必要・ブラウザリロード = 'Tienes que reiniciar el juego. Por favor recarga tu navegador'
 	&mes.プレイデータをエクスポートしました = 'Datos de reproducción exportados'
+	&mes.確認ダイアログをリセットしました = 'Diálogos de confirmación restablecidos'
 
 	; _saveload.sn
 	&mes.しおりを上書き保存しますか？ = '¿Guardar como favorito?'
@@ -388,6 +392,7 @@
 	&mes.ゲームを再起動する必要・終了しますか？ = 'ゲームを再起動する必要があります。終了しますか？　（起動は手動で）'
 	&mes.ゲームを再起動する必要・ブラウザリロード = 'ゲームを再起動する必要があります。ブラウザリロードしてください'
 	&mes.プレイデータをエクスポートしました = 'プレイデータをエクスポートしました'
+	&mes.確認ダイアログをリセットしました = '確認ダイアログをリセットしました'
 
 	; _saveload.sn
 	&mes.しおりを上書き保存しますか？ = 'しおりを上書きセーブしますか？'
