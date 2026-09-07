@@ -2,6 +2,7 @@
 
 	[add_frame id=log src=_log visible=false]
 	[event key='dom=log:#close' label=*exit global=true]
+	[event key='dom=log:#do_jump' label=*jump global=true]
 
 	[event global=true call=true key=r label=*main]
 	[event global=true call=true key=arrowup label=*main]
@@ -84,6 +85,25 @@
 	[reload_script]
 
 *null
+[return]
+
+;*********************************************************
+; バックログの行番号ボタン → その場面へジャンプ（[page place=N]）。
+;	N は本文履歴（const.sn.log.json）の並び。演じ直せる停止点がまだ無い行は
+;	[page]側が何もせず戻る（＝この後の[return]まで素通り）。
+*jump
+	[let_frame id=log var_name=val_place]
+	[return cond='const.sn.frm.log.val_place < 0']
+	[se fn=&sysse_ok1 buf=SYS]
+
+	[frame id=log visible=false]
+
+	[enable_event enabled=true]
+	[enable_event enabled=true layer=mes_sysmenu]
+	[set_focus to=null]
+	&isGameState = true
+
+	[page place=&const.sn.frm.log.val_place]
 [return]
 
 ;*********************************************************

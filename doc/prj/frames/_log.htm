@@ -35,6 +35,10 @@
 	// SKYNovelから読み書きする変数なので、触らない。わざとvar
 	var val_dic = null;
 
+	// 行番号ボタンで選んだ履歴ページ番号（const.sn.log.json の並び）。
+	//	#do_jump の疑似クリックで _log.sn *jump が [let_frame] で拾う
+	var val_place = -1;
+
 	var val_ui_lang = 'ja';
 	var val_ui = {
 		"ja": {
@@ -76,14 +80,23 @@
 				const n = document.createElement('div');
 				n.innerHTML = `
 <div id="r${d.i}" class="card"><div class="card-body"><p class="card-text">
-	<button type="button" class="btn btn-dark">${d.i+1}</button>
+	<button type="button" class="btn btn-dark" data-place="${d.i}" title="この場面へ戻る">${d.i+1}</button>
 	${d.t}
 </p></div></div>`;
 				return n;
 			},
 			updateRow: (d, el)=> el.childNodes[0].innerHTML = `
-<span class="badge rounded-pill bg-dark">${d.i+1}</span>${d.t}`,
+<button type="button" class="btn btn-dark" data-place="${d.i}" title="この場面へ戻る">${d.i+1}</button>${d.t}`,
 		});
+
+		// 行番号ボタン → その場面へジャンプ。行は再生成/再利用されるので #log へ委譲
+		const doJump = document.getElementById('do_jump');
+		eLog.onclick = e=> {
+			const b = e.target.closest('button[data-place]');
+			if (! b) return;
+			val_place = Number(b.dataset.place);
+			doJump.dispatchEvent(new MouseEvent('click', {cancelable: true}));
+		};
 
 		const eLogMap = document.getElementById('logMap');
 		eLogMap.textContent = '';	// 必須
@@ -118,6 +131,9 @@
 </script>
 </head>
 <body class="bg-dark bg-gradient" oncontextmenu="return false">
+
+	<!-- 行番号ボタンのジャンプ用トリガ（_log.sn *jump）。表示しない -->
+	<button type="button" id="do_jump" hidden></button>
 
 	<nav class="navbar fixed-top navbar-expand navbar-dark bg-dark">
 	<div class="container-fluid">
