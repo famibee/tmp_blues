@@ -1,7 +1,11 @@
 # Change Log
 
+## v2.22.0
+- upd: ライブラリ更新
+	- @famibee/bluesnovel@0.14.0
+	- vite@8.3.0
 ## v2.21.1
-- update: ライブラリ更新
+- upd: ライブラリ更新
 	- @famibee/skynovel_esm@2.0.1
 	- vite@8.0.0-beta.3
 - build(vite.config.ts): vite v8 対応に
