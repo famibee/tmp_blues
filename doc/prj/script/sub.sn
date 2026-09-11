@@ -275,6 +275,7 @@
 	detail='このマクロを改造し、ボタンの画像変更・位置変更・増減を行える'
 
 	%no_sysmenu_draw?='true、false|なにもしない|trueを指定すると、次の[grp]などでの文字レイヤ[trans]などでシステムメニューを表示しない'
+	%t?='実数|const.sn.lay.mes.back.y|文字レイヤ上端。呼び出し元のローカル確定値を渡す。\n[trans]反映前のconst.sn.lay.mes.back.y（古い値のことがある）を参照しないため'
 ]
 	[return cond=!useSysMenu]
 	&v = const.sn.lay.mes_sysmenu.fore.visible
@@ -283,7 +284,8 @@
 	[return cond="mp:no_sysmenu_draw != null"]
 
 	[let name=sysmenu_left text=200]
-	[let name=sysmenu_top text=&const.sn.lay.mes.back.y+mp:h-10]
+	[let name=t text=%t|const.sn.lay.mes.back.y]
+	[let name=sysmenu_top text=&t+mp:h-10]
 	[let name=sysmenu_top text=&sysmenu_top+mp:sysmenu_top cond=mp:sysmenu_top]
 	&r = 0	; ボタンを横にしたいなら
 	;&r = 90	; ボタンを縦にしたいなら
@@ -348,7 +350,7 @@
 		b_alpha=%b_alpha|1
 		bura=%bura|&bura_mode
 		style="&'color: #{fcol}; width: #{const.sn.config.window.width}px; height: #{h}px; writing-mode: horizontal-tb; padding-left: #{pl}px; padding-right: #{pr}px; padding-top: #{pt}px; padding-bottom: #{pb}px; font-family: #{def_fonts}; font-size: #{font_size}px; line-height: 1.5;'"]
-	[sysmenu_draw_h * h=&h]
+	[sysmenu_draw_h * h=&h t=&t]
 [endmacro]
 
 

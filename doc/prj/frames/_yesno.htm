@@ -13,7 +13,7 @@
 </style>
 <script defer src="lib/bootstrap.min.js"></script>
 <script>
-	let o = {mes: '本文', pic: ''};
+	let o = {mes: '本文', pic: '', rk: ''};
 	const isDev = (location.protocol === 'file:');
 	const isWebp = false/*WEBP*/;
 	document.addEventListener('DOMContentLoaded', ()=> {
@@ -30,8 +30,9 @@
 	}, {once: true});
 
 	// SKYNovelから読み書きする変数なので、触らない。わざとvar
-	var val_dic = null;
-	var val_rk = '';		// [ask_ync remember_key=…] のキー。空なら「次から確認しない」を出さない
+	var val_dic = null;	// {mes, pic, rk} のJSON。rkは[ask_ync remember_key=…]のキー。
+							//	空なら「次から確認しない」を出さない（[set_frame]は空文字を
+							//	「属性なし」扱いで弾くため、val_rk単体ではなくここへ同梱する）
 	var val_dontask = false;	// 「次からこの確認をしない」チェック状態（SKYNovel が読む）
 
 	var val_ui_lang = 'ja';
@@ -64,7 +65,7 @@
 		if (! img.hidden) img.dataset.src = o.pic;
 
 		// 「次からこの確認をしない」：remember_key 指定時だけ表示。開くたび未チェックへ戻す
-		const rk = (typeof val_rk === 'string') ? val_rk : '';
+		const rk = (typeof o.rk === 'string') ? o.rk : '';
 		document.getElementById('dontask_row').hidden = !rk;
 		val_dontask = false;
 		document.getElementById('dontask').checked = false;
@@ -96,7 +97,7 @@
 			<div id="dontask_row" class="text-center mt-3" hidden>
 				<div class="form-check d-inline-block">
 					<input class="form-check-input" type="checkbox" id="dontask"/>
-					<label class="form-check-label" for="dontask" id="dontask_label">次からこの確認をしない</label>
+					<label class="form-check-label" for="dontask" id="dontask_label" style="color: #fff; text-shadow: 0 0 3px #000, 0 0 3px #000, 0 0 3px #000;">次からこの確認をしない</label>
 				</div>
 			</div>
 		</div>

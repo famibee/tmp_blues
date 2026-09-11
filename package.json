@@ -15,7 +15,7 @@
 	"dependencies": {
 		"@electron-toolkit/preload": "^3.0.2",
 		"@electron-toolkit/utils": "^4.0.0",
-		"@famibee/bluesnovel": "latest",
+		"@famibee/bluesnovel": "^0.15.4",
 		"about-window": "^1.15.2",
 		"humane-js": "^3.2.2",
 		"js-yaml": "^5.4.1",

@@ -1,5 +1,20 @@
 # Change Log
 
+## v2.22.1
+- fix(sysmenu_draw_h): システムメニューのボタン位置ズレ・ちらつきを修正
+	sysmenu_top計算がconst.sn.lay.mes.back.y（文字レイヤの内部状態）を参照していたが、
+	[trans]反映前はまだ古い値のことがあった。症状：
+	(a) システムメニューのボタン位置が文字レイヤ上端とズレる
+	(b) タイトル→本文の遷移で一瞬ボタンが古い位置に見える（ちらつき）
+
+	呼び出し元txt_lay_fullscreenのローカル確定値t（文字レイヤ上端）を
+	[sysmenu_draw_h * h=&h t=&t]で直接渡すようにし、sysmenu_top計算をt基準に変更。
+	const.sn.lay.mes.back.y参照はやめた（省略時のデフォルトとしては残す）。
+- fix(frames): ask_ync の remember_key 省略時にロード確認ダイアログが出ない不具合を修正
+	[set_frame] は空文字テキストを「属性なし」とみなして弾くため、remember_key を
+	渡さない ask_ync 呼び出し（クイックロード確認など）で _ry_rk が空文字になると
+	val_rk の set_frame が textは必須ですエラーで落ちていた。val_rk を単独送信せず
+	val_dic の JSON に rk として同梱し、空文字でも全体は非空文字列になるよう変更。
 ## v2.22.0
 - upd: ライブラリ更新
 	- @famibee/bluesnovel@0.14.0

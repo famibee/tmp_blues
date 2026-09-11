@@ -41,6 +41,7 @@
 
 	%mes='String||プレイヤーに質問したい文言'
 	%remember_key?='キー名|毎回確認する|指定すると「次からこの確認をしない」チェックを表示する。\nチェック＋了解 で sys:sn.dontAsk.キー名 に登録し、次回以降このダイアログを出さず「了解」を返す。\nキャンセル時は登録しない（否定を記憶するとその選択肢が無反応に見えるため）。\n登録の消去は設定画面の「確認ダイアログをリセット」（_config.sn *resetDontAsk）'
+	%pic?='画像ファイル名|なし|確認ダイアログに添えるサムネイル画像（クイックロード等）'
 ]
 	[let name=_ry_rk text=%remember_key|'']
 	; 「次から確認しない」でスキップ登録済み（＝肯定の答えを記憶）なら、ダイアログを
@@ -66,10 +67,12 @@
 	[clear_event]
 
 	; 最新値で更新
+	;	rkは remember_key 省略時 '' になりうるが、[set_frame]は空文字テキストを
+	;	「属性が無い」扱いにして弾く（textは必須です）ため、val_dicのJSONへ同梱して
+	;	空文字でも全体としては非空文字列になるようにする
 	[let name=pic text=%pic|'']
-	[set_frame id=yesno var_name=val_dic text=#&'{"mes":"$mp:mes","pic":"$pic"}'#]
+	[set_frame id=yesno var_name=val_dic text=#&'{"mes":"$mp:mes","pic":"$pic","rk":"$_ry_rk"}'#]
 	[set_frame id=yesno var_name=val_ui_lang text=&lang]
-	[set_frame id=yesno var_name=val_rk text=&_ry_rk]
 	[let_frame id=yesno var_name=val2ctrl function=true]
 
 	[frame id=yesno visible=true float=true]
